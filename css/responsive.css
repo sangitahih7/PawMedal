@@ -100,8 +100,38 @@
     object-position: center;
   }
 
-  /* Responsive Choose Section */
+  /* Responsive Choose & Profile Section (Unpin on Tablet) */
+  .choose_profile_pin_wrapper {
+    height: auto !important;
+  }
+
+  .choose_profile_pinned {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   .choose_section {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    opacity: 1 !important;
+    padding: 80px 0 90px;
+  }
+
+  .profile_section {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    box-shadow: none !important;
     padding: 80px 0 90px;
   }
 
@@ -119,6 +149,83 @@
     max-width: 520px;
     margin: 0 auto;
     width: 100%;
+  }
+
+  /* Responsive Profile Section Tablet */
+  .profile_section {
+    padding: 80px 0 90px;
+  }
+
+  .profile_row {
+    flex-direction: column;
+    text-align: center;
+    gap: 45px;
+  }
+
+  .profile_visual_col,
+  .profile_content_col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .profile_paw_bg {
+    width: 380px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-4deg);
+    top: -20px;
+  }
+
+  .profile_phone_box {
+    max-width: 440px;
+    margin: 0 auto;
+    left: 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .arrow_mask_stroke,
+  .arrow_tip {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .profile_tap_note {
+    right: 2%;
+    top: 10%;
+  }
+
+  .profile_header h2 {
+    font-size: 38px;
+  }
+
+  .profile_desc {
+    margin: 0 auto 30px;
+  }
+
+  .profile_features_wrap {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .profile_feat_list {
+    align-items: center;
+    width: 100%;
+  }
+
+  .profile_feat_item {
+    justify-content: flex-start;
+    max-width: 380px;
+    width: 100%;
+  }
+
+  .profile_qr_tag {
+    flex: 0 0 auto;
+  }
+
+  .profile_access_card {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
   }
 }
 
@@ -224,6 +331,43 @@
   .choose_card:nth-child(3) {
     grid-column: span 1;
     max-width: 100%;
+  }
+
+  /* Responsive Profile Section Mobile */
+  .profile_section {
+    padding: 65px 0 75px;
+  }
+
+  .profile_header h2 {
+    font-size: 28px;
+  }
+
+  .profile_desc {
+    font-size: 15px;
+  }
+
+  .profile_paw_bg {
+    width: 290px;
+    top: -15px;
+  }
+
+  .profile_phone_box {
+    max-width: 320px;
+  }
+
+  .profile_tap_note {
+    right: -2%;
+    top: 8%;
+  }
+
+  .tap_note_text {
+    font-size: 13px;
+  }
+
+  .profile_access_card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
   }
 }
 

@@ -19,6 +19,7 @@
         initSmoothParallax();
         initSpyltNextSection();
         initChooseSection();
+        initProfileSection();
         initTopBarClose();
         initBackToTop();
     }
@@ -638,7 +639,180 @@
     }
 
     // ========================================================
-    // 5. Top Bar Close Handler
+    // 5. Choose & Profile Sticky-Stack Horizontal Scroll Reveal (Bidirectional)
+    //    - Scroll down: Profile section smoothly appears from right within 2s scroll
+    //    - Scroll up: Profile section slowly disappears to right, Choose section slowly appears from left
+    //    - Hand image and arrow animate upon arrival, smoothly retract upon reverse
+    // ========================================================
+    function initProfileSection() {
+        var wrapper = document.getElementById('chooseProfilePinWrapper');
+        var chooseSection = document.getElementById('chooseSection');
+        var profileSection = document.getElementById('profileSection');
+        if (!wrapper || !profileSection) return;
+
+        var targetProgress = 0;
+        var currentProgress = 0;
+        var profileRevealed = false;
+        var rafId = null;
+        var handTimer = null;
+        var arrowTimer = null;
+
+        function lerp(start, end, factor) {
+            return start + (end - start) * factor;
+        }
+
+        function renderScrollProgress() {
+            currentProgress = lerp(currentProgress, targetProgress, 0.12);
+
+            if (Math.abs(currentProgress - targetProgress) < 0.002) {
+                currentProgress = targetProgress;
+            }
+
+            // 1. Profile section: from 100% (off right) to 0% (fully covering view)
+            var translateX = (1 - currentProgress) * 100;
+            profileSection.style.transform = 'translate3d(' + translateX.toFixed(3) + '%, 0, 0)';
+
+            if (currentProgress > 0.008) {
+                profileSection.style.visibility = 'visible';
+            } else {
+                profileSection.style.visibility = 'hidden';
+            }
+
+            if (currentProgress > 0.3) {
+                profileSection.classList.add('in-view');
+            } else {
+                profileSection.classList.remove('in-view');
+            }
+
+            // 2. Choose section: slight parallax shift left (-5%) and scale (0.96)
+            // When scrolling up, it shifts back from -5% to 0% (reappearing from left side) and scales to 1.0
+            if (chooseSection) {
+                var chooseX = -currentProgress * 5;
+                var chooseScale = 1 - (currentProgress * 0.04);
+                var chooseOpacity = 1 - (currentProgress * 0.15);
+                chooseSection.style.transform = 'translate3d(' + chooseX.toFixed(2) + '%, 0, 0) scale(' + chooseScale.toFixed(3) + ')';
+                chooseSection.style.opacity = chooseOpacity.toFixed(3);
+            }
+
+            // 3. Hand image & arrow animation triggers
+            if (currentProgress >= 0.98) {
+                if (!profileRevealed) {
+                    profileRevealed = true;
+                    profileSection.classList.add('slide-in');
+
+                    // Hand image smoothly appears from bottom corner
+                    if (handTimer) clearTimeout(handTimer);
+                    handTimer = setTimeout(function () {
+                        profileSection.classList.add('hand-revealed');
+
+                        // Dotted arrow draws itself progressively from start to tip
+                        if (arrowTimer) clearTimeout(arrowTimer);
+                        arrowTimer = setTimeout(function () {
+                            profileSection.classList.add('arrow-drawn');
+                        }, 550);
+                    }, 250);
+                }
+            } else if (currentProgress < 0.90) {
+                // When scrolling back up, retract the hand and arrow so they smoothly disappear
+                if (profileRevealed) {
+                    profileRevealed = false;
+                    if (handTimer) clearTimeout(handTimer);
+                    if (arrowTimer) clearTimeout(arrowTimer);
+                    profileSection.classList.remove('hand-revealed', 'arrow-drawn', 'slide-in');
+                }
+            }
+
+            if (currentProgress !== targetProgress) {
+                rafId = requestAnimationFrame(renderScrollProgress);
+            } else {
+                rafId = null;
+            }
+        }
+
+        function wakeRender() {
+            if (!rafId) {
+                rafId = requestAnimationFrame(renderScrollProgress);
+            }
+        }
+
+        function resetAll() {
+            targetProgress = 0;
+            currentProgress = 0;
+            profileRevealed = false;
+            if (handTimer) {
+                clearTimeout(handTimer);
+                handTimer = null;
+            }
+            if (arrowTimer) {
+                clearTimeout(arrowTimer);
+                arrowTimer = null;
+            }
+            profileSection.classList.remove('slide-in', 'hand-revealed', 'arrow-drawn', 'in-view');
+            profileSection.style.transform = 'translate3d(100%, 0, 0)';
+            profileSection.style.visibility = 'hidden';
+            if (chooseSection) {
+                chooseSection.style.transform = '';
+                chooseSection.style.opacity = '1';
+            }
+        }
+
+        // Active mouse wheel scroll handler (bidirectional)
+        window.addEventListener('wheel', function (e) {
+            if (window.innerWidth <= 991) return;
+
+            var rect = wrapper.getBoundingClientRect();
+            // Is the pinned Choose section in the viewport?
+            var isInsidePin = (rect.top <= 40 && rect.bottom > 120);
+            if (!isInsidePin) return;
+
+            // Normalized delta: roughly 2 seconds of comfortable wheel scrolling (approx 2200px total scroll delta)
+            var deltaFactor = 2200;
+
+            if (e.deltaY > 0) {
+                // User scrolling DOWN: advance towards profile section
+                if (targetProgress < 1) {
+                    targetProgress = Math.min(1, targetProgress + (e.deltaY / deltaFactor));
+                    wakeRender();
+                }
+            } else if (e.deltaY < 0) {
+                // User scrolling UP: smoothly reverse towards choose section!
+                if (targetProgress > 0) {
+                    targetProgress = Math.max(0, targetProgress + (e.deltaY / deltaFactor));
+                    wakeRender();
+                }
+            }
+        }, { passive: true });
+
+        // Scroll check for reset when user scrolls back up past the Choose section
+        window.addEventListener('scroll', function () {
+            if (window.innerWidth <= 991) {
+                // Mobile & Tablet fallback: reveal when scrolled into view
+                var profRect = profileSection.getBoundingClientRect();
+                if (profRect.top < window.innerHeight * 0.8) {
+                    profileSection.classList.add('hand-revealed', 'arrow-drawn', 'in-view');
+                }
+                return;
+            }
+
+            var rect = wrapper.getBoundingClientRect();
+            // If user scrolled back up above the Choose section, reset everything
+            if (rect.top > 80) {
+                if (targetProgress > 0 || profileRevealed) {
+                    resetAll();
+                }
+            }
+        }, { passive: true });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 991) {
+                profileSection.style.transform = '';
+                profileSection.style.visibility = 'visible';
+            }
+        }, { passive: true });
+    }
+
+    // ========================================================
+    // 6. Top Bar Close Handler
     // ========================================================
     function initTopBarClose() {
         var topBarClose = document.getElementById('topBarClose');
@@ -655,7 +829,7 @@
     }
 
     // ========================================================
-    // 5. Back To Top Handler
+    // 7. Back To Top Handler
     // ========================================================
     function initBackToTop() {
         var btn = document.getElementById('backToTop');

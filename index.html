@@ -232,8 +232,12 @@
         </div>
     </section>
 
-	<!-- Choose Your PawMedal Section -->
-    <section class="choose_section" id="chooseSection">
+	<!-- Choose and Profile Sticky-Stack Pin Wrapper -->
+    <div class="choose_profile_pin_wrapper" id="chooseProfilePinWrapper">
+        <div class="choose_profile_pinned" id="chooseProfilePinned">
+
+            <!-- Choose Your PawMedal Section (Base Stacked Layer) -->
+            <section class="choose_section" id="chooseSection">
         <div class="container">
 
             <!-- Section Header -->
@@ -317,6 +321,109 @@
 
         </div>
     </section>
+
+    <!-- More Than A Name Profile Section (Appears from Right on Mouse Scroll) -->
+            <section class="profile_section cmn_pdding" id="profileSection">
+                <div class="container">
+                    <div class="profile_row">
+
+                        <!-- Left Column: Hand & Phone Mockup Visual with Warm Tan Paw Background -->
+                        <div class="profile_visual_col">
+                            <!-- Warm Tan Paw Print Background (Figma exact using user provided paw) -->
+                            <div class="profile_paw_bg">
+                                <img src="images/paw_original.png" alt="Paw Print Background">
+                            </div>
+
+                            <div class="profile_mockup_container">
+                                <!-- Floating Tap Note with Looped Dotted Arrow -->
+                                <div class="profile_tap_note">
+                                    <span class="tap_note_text">All the important<br>info, just a tap<br>away.</span>
+                                    <div class="tap_arrow_img">
+                                        <!-- Self-Drawing Dotted Looped Arrow -->
+                                        <svg class="tap_draw_arrow" viewBox="0 0 145 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <!-- Dynamic Mask that sweeps from start to end -->
+                                                <mask id="arrowDrawMask">
+                                                    <path class="arrow_mask_stroke" d="M 125,8 C 115,30 98,54 80,66 C 64,78 38,86 34,70 C 30,54 56,46 76,60 C 86,68 84,84 66,96 C 46,108 26,114 12,115"
+                                                          fill="none" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"
+                                                          pathLength="300" stroke-dasharray="300" stroke-dashoffset="300" />
+                                                </mask>
+                                            </defs>
+                                            <!-- Dotted Arrow Body -->
+                                            <path class="arrow_body_dots" d="M 125,8 C 115,30 98,54 80,66 C 64,78 38,86 34,70 C 30,54 56,46 76,60 C 86,68 84,84 66,96 C 46,108 26,114 12,115"
+                                                  fill="none" stroke="#222222" stroke-width="2.2" stroke-dasharray="3.5 4" stroke-linecap="round"
+                                                  mask="url(#arrowDrawMask)" />
+                                            <!-- Arrowhead Tip pointing at phone screen -->
+                                            <path class="arrow_tip" d="M 24,105 L 10,115 L 18,126"
+                                                  fill="none" stroke="#222222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                                  pathLength="60" stroke-dasharray="60" stroke-dashoffset="60" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Large Phone Mockup Image (No floating bobbing) -->
+                                <div class="profile_phone_box">
+                                    <img src="images/profile_hand_phone.png" alt="PawMedal Pet Profile Screen" class="profile_phone_img">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Content, Feature List, QR Tag & Access Card -->
+                        <div class="profile_content_col">
+                            <div class="profile_header cmn_hdr">
+                                <h2>More than a <span class="ylwtxt">name</span><br> and  <span class="ylwtxt">phone number.</span></h2>
+                                <p class="profile_desc">Give your pet's profile a story, so it's always there when it matters the most. All in one place. Your pet profile can include owner contact details, vaccination records, medical info, lost mode, location history and more peace of mind.</p>
+                            </div>
+
+                            <!-- Features & QR Tag Dual Layout -->
+                            <div class="profile_features_wrap">
+                                <!-- Left: 4 Feature Bullet Points -->
+                                 <div class="prfl_wrpr_lft">
+                                <div class="profile_feat_list">
+                                    <div class="profile_feat_item">
+                                        <span class="feat_icon_circle"><i class="fa-solid fa-phone"></i></span>
+                                        <span class="feat_label">Owner contact details</span>
+                                    </div>
+                                    <div class="profile_feat_item">
+                                        <span class="feat_icon_circle"><i class="fa-solid fa-syringe"></i></span>
+                                        <span class="feat_label">Vaccination records.</span>
+                                    </div>
+                                    <div class="profile_feat_item">
+                                        <span class="feat_icon_circle"><i class="fa-solid fa-notes-medical"></i></span>
+                                        <span class="feat_label">Medical info Lost mode</span>
+                                    </div>
+                                    <div class="profile_feat_item">
+                                        <span class="feat_icon_circle"><i class="fa-solid fa-location-dot"></i></span>
+                                        <span class="feat_label">Location history More peace of mind</span>
+                                    </div>
+                                </div>
+
+                                 <!-- Access Card Badge -->
+                            <div class="profile_access_card">
+                                <div class="access_card_icon">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                </div>
+                                <div class="access_card_text">
+                                    Accessible on any device via QR or NFC. No app required for the pet's profile information
+                                </div>
+                            </div>
+                            </div>
+
+                                <!-- Right: PawMedal QR Tag Visual -->
+                                <div class="profile_qr_tag">
+                                    <div class="qr_tag_inner">
+                                        <img src="images/tag_qr.png" alt="PawMedal QR Code Tag">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
 
 	<!-- banner end -->
 
